@@ -2,11 +2,11 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/accentColor</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary_light</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:windowBackground">@color/background_primary</item>
     </style>
 
 </resources>

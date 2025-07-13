@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_primary">
@@ -13,18 +12,19 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary_color"
         android:elevation="4dp"
-        app:title="My Recipes"
+        app:title="Favorite Recipes"
         app:titleTextColor="@android:color/white" />
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/bottomNavigation">
 
-        <!-- Recipe List -->
+        <!-- Favorites List -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewRecipes"
+            android:id="@+id/recyclerViewFavorites"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
@@ -43,15 +43,16 @@
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/ic_empty_recipes"
+                android:src="@drawable/ic_heart_outline"
                 android:alpha="0.5"
                 android:layout_marginBottom="24dp"
-                android:contentDescription="No recipes" />
+                android:contentDescription="No favorites"
+                android:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No recipes yet"
+                android:text="No favorite recipes yet"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
@@ -60,15 +61,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tap the + button below to add your first recipe!"
+                android:text="Start adding recipes to your favorites by tapping the heart icon!"
                 android:textSize="16sp"
                 android:textColor="@color/text_secondary"
                 android:textAlignment="center" />
+
         </LinearLayout>
 
     </FrameLayout>
 
     <!-- Bottom Navigation -->
-    <include layout="@layout/bottom_navigation" />
+    <include
+        android:id="@+id/bottomNavigation"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
-</LinearLayout>
+</RelativeLayout>
