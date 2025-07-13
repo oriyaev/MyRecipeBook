@@ -18,7 +18,7 @@ An Android app built with Java and Gradle that helps you plan, save, and manage 
 - **Minimum SDK**: 21  
 - **Target SDK**: 34  
 - **Image Handling**: Camera / Gallery integration  
-- **Storage**: Local database (Room or SQLite)  
+- **Storage**: Local database (Room)  
 - **UI**: Material Design Components  
 
 ## 📦 Project Structure
