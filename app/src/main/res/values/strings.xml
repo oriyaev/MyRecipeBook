@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Recipe Book</string>
+    <string name="welcome_message">Welcome to My Recipe Book</string>
+    <string name="get_started">Get Started</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="registration_successful">Registration successful</string>
+    <string name="all_fields_required">All fields are required</string>
+    <string name="favorite_label">★ Favorite</string>
+</resources>
