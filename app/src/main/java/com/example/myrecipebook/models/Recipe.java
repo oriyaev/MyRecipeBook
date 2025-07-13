@@ -8,21 +8,26 @@ public class Recipe {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int userId; // Foreign key
     public String name;
+    public String category;
     public String ingredients;
     public String instructions;
-    public String category;
-    public String imagePath;
+    public int userId;
     public boolean isFavorite;
+    public long createdAt;
 
-    public Recipe(int userId, String name, String ingredients, String instructions, String category, String imagePath, boolean isFavorite) {
-        this.userId = userId;
+    public Recipe() {
+        this.createdAt = System.currentTimeMillis();
+        this.isFavorite = false;
+    }
+
+    public Recipe(String name, String category, String ingredients, String instructions, int userId) {
         this.name = name;
+        this.category = category;
         this.ingredients = ingredients;
         this.instructions = instructions;
-        this.category = category;
-        this.imagePath = imagePath;
-        this.isFavorite = isFavorite;
+        this.userId = userId;
+        this.createdAt = System.currentTimeMillis();
+        this.isFavorite = false;
     }
 }

@@ -1,65 +1,105 @@
 package com.example.myrecipebook.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.BaseAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myrecipebook.R;
 import com.example.myrecipebook.models.Recipe;
 
 import java.util.List;
 
-public class RecipeAdapter extends BaseAdapter {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    final private Context context;
-    final private List<Recipe> recipeList;
+    private List<Recipe> recipes;
+    private OnRecipeClickListener listener;
+    private OnFavoriteClickListener favoriteListener;
 
-    public RecipeAdapter(Context context, List<Recipe> recipeList) {
-        this.context = context;
-        this.recipeList = recipeList;
+    public interface OnRecipeClickListener {
+        void onRecipeClick(Recipe recipe);
+    }
+
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(Recipe recipe, int position);
+    }
+
+    public RecipeAdapter(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public void setOnRecipeClickListener(OnRecipeClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.favoriteListener = listener;
+    }
+
+    @NonNull
+    @Override
+    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_recipe, parent, false);
+        return new RecipeViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return recipeList.size();
+    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
+        Recipe recipe = recipes.get(position);
+        holder.bind(recipe, position);
     }
 
     @Override
-    public Object getItem(int position) {
-        return recipeList.get(position);
+    public int getItemCount() {
+        return recipes.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return recipeList.get(position).id;
+    public void updateRecipes(List<Recipe> newRecipes) {
+        this.recipes = newRecipes;
+        notifyDataSetChanged();
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_recipe, parent, false);
+    public void updateRecipe(int position, Recipe recipe) {
+        recipes.set(position, recipe);
+        notifyItemChanged(position);
+    }
+
+    class RecipeViewHolder extends RecyclerView.ViewHolder {
+        TextView recipeName, category;
+        ImageButton favoriteButton;
+
+        public RecipeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            recipeName = itemView.findViewById(R.id.textViewRecipeName);
+            category = itemView.findViewById(R.id.textViewCategory);
+            favoriteButton = itemView.findViewById(R.id.buttonFavorite);
         }
 
-        TextView textViewRecipeName = convertView.findViewById(R.id.textViewRecipeName);
-        TextView textViewCategory = convertView.findViewById(R.id.textViewCategory);
-        TextView textViewFavorite = convertView.findViewById(R.id.textViewFavorite);
+        public void bind(Recipe recipe, int position) {
+            recipeName.setText(recipe.name);
+            category.setText(recipe.category);
 
-        Recipe recipe = recipeList.get(position);
+            // Update favorite button appearance
+            favoriteButton.setImageResource(recipe.isFavorite ?
+                    R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
 
-        textViewRecipeName.setText(recipe.name);
-        textViewCategory.setText(recipe.category);
+            // Set click listeners
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onRecipeClick(recipe);
+                }
+            });
 
-        // אם מועדף, להציג את הסימון
-        if (recipe.isFavorite) {
-            textViewFavorite.setVisibility(View.VISIBLE);
-            textViewFavorite.setText("R.string.favorite_label");
-        } else {
-            textViewFavorite.setVisibility(View.GONE);
+            favoriteButton.setOnClickListener(v -> {
+                if (favoriteListener != null) {
+                    favoriteListener.onFavoriteClick(recipe, position);
+                }
+            });
         }
-
-        return convertView;
     }
 }

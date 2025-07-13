@@ -1,63 +1,111 @@
 package com.example.myrecipebook.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myrecipebook.R;
 import com.example.myrecipebook.adapters.RecipeAdapter;
 import com.example.myrecipebook.db.AppDatabase;
 import com.example.myrecipebook.models.Recipe;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.myrecipebook.utils.BottomNavigationHelper;
 
 import java.util.List;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity implements
+        RecipeAdapter.OnRecipeClickListener, RecipeAdapter.OnFavoriteClickListener {
 
-    ListView listViewRecipes;
-    FloatingActionButton fabAddRecipe;
+    RecyclerView recyclerViewRecipes;
+    LinearLayout emptyStateView;
     List<Recipe> recipeList;
+    RecipeAdapter adapter;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        listViewRecipes = findViewById(R.id.listViewRecipes);
-        fabAddRecipe = findViewById(R.id.fabAddRecipe);
+        // Setup toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "myrecipebook.db")
-                .allowMainThreadQueries()
-                .build();
+        recyclerViewRecipes = findViewById(R.id.recyclerViewRecipes);
+        emptyStateView = findViewById(R.id.emptyStateView);
 
-        recipeList = db.recipeDao().getRecipesByUser(1); // 1 זה userId – תחליפי למשתמש המחובר
+        db = AppDatabase.getDatabase(this);
 
-        if (recipeList.isEmpty()) {
-            TextView emptyView = new TextView(this);
-            emptyView.setText("No recipes yet. Tap + to add your first one!");
-            emptyView.setTextSize(18);
-            emptyView.setPadding(50, 200, 50, 0);
-            setContentView(emptyView);
-        } else {
-            RecipeAdapter adapter = new RecipeAdapter(this, recipeList);
-            listViewRecipes.setAdapter(adapter);
+        // Setup RecyclerView
+        recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RecipeAdapter(recipeList);
+        adapter.setOnRecipeClickListener(this);
+        adapter.setOnFavoriteClickListener(this);
+        recyclerViewRecipes.setAdapter(adapter);
 
-            listViewRecipes.setOnItemClickListener((parent, view, position, id) -> {
-                Recipe selectedRecipe = recipeList.get(position);
-                Intent intent = new Intent(this, RecipeDetailActivity.class);
-                intent.putExtra("recipeId", selectedRecipe.id);
-                startActivity(intent);
-            });
-        }
+        // Setup bottom navigation
+        BottomNavigationHelper.setupBottomNavigation(this);
+        BottomNavigationHelper.setActiveTab(this, "recipes");
 
-        fabAddRecipe.setOnClickListener(view -> {
-            Intent intent = new Intent(this, AddRecipeActivity.class);
-            startActivity(intent);
-        });
+        loadRecipes();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadRecipes();
+    }
+
+    private void loadRecipes() {
+        new AsyncTask<Void, Void, List<Recipe>>() {
+            @Override
+            protected List<Recipe> doInBackground(Void... voids) {
+                return db.recipeDao().getRecipesByUser(1);
+            }
+
+            @Override
+            protected void onPostExecute(List<Recipe> recipes) {
+                recipeList = recipes;
+
+                if (recipes.isEmpty()) {
+                    recyclerViewRecipes.setVisibility(View.GONE);
+                    emptyStateView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerViewRecipes.setVisibility(View.VISIBLE);
+                    emptyStateView.setVisibility(View.GONE);
+                    adapter.updateRecipes(recipes);
+                }
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onRecipeClick(Recipe recipe) {
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra("recipeId", recipe.id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFavoriteClick(Recipe recipe, int position) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                recipe.isFavorite = !recipe.isFavorite;
+                db.recipeDao().updateFavoriteStatus(recipe.id, recipe.isFavorite);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                adapter.updateRecipe(position, recipe);
+            }
+        }.execute();
     }
 }

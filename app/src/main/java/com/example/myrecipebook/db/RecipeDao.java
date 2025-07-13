@@ -1,34 +1,35 @@
 package com.example.myrecipebook.db;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import androidx.room.Delete;
+
 import com.example.myrecipebook.models.Recipe;
 
 import java.util.List;
 
 @Dao
 public interface RecipeDao {
-    @Insert
-    void insert(Recipe recipe);
-
-    @Update
-    void update(Recipe recipe);
-
-    @Delete
-    void delete(Recipe recipe);
-
-    @Query("SELECT * FROM recipes WHERE userId = :userId")
+    @Query("SELECT * FROM recipes WHERE userId = :userId ORDER BY createdAt DESC")
     List<Recipe> getRecipesByUser(int userId);
 
-    @Query("SELECT * FROM recipes WHERE userId = :userId AND isFavorite = 1")
-    List<Recipe> getFavoriteRecipes(int userId);
+    @Query("SELECT * FROM recipes WHERE userId = :userId AND isFavorite = 1 ORDER BY createdAt DESC")
+    List<Recipe> getFavoriteRecipesByUser(int userId);
 
-    @Query("SELECT * FROM recipes WHERE userId = :userId AND category = :category")
-    List<Recipe> getRecipesByCategory(int userId, String category);
+    @Query("SELECT * FROM recipes WHERE id = :id")
+    Recipe getRecipeById(int id);
 
-    @Query("SELECT * FROM recipes WHERE id = :recipeId LIMIT 1")
-    Recipe getRecipeById(int recipeId);
+    @Insert
+    long insertRecipe(Recipe recipe);
+
+    @Update
+    void updateRecipe(Recipe recipe);
+
+    @Delete
+    void deleteRecipe(Recipe recipe);
+
+    @Query("UPDATE recipes SET isFavorite = :isFavorite WHERE id = :recipeId")
+    void updateFavoriteStatus(int recipeId, boolean isFavorite);
 }
