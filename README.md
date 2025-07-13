@@ -1,5 +1,5 @@
 
-# 📖 RecipeBook Planner App
+# 📖 MyRecipeBook Planner App
 
 An Android app built with Java and Gradle that helps you plan, save, and manage your favorite recipes — all in one place! Users can upload recipes using image files, add ingredients, and create a personalized list of favorite recipes.
 
@@ -24,7 +24,7 @@ An Android app built with Java and Gradle that helps you plan, save, and manage 
 ## 📦 Project Structure
 
 ```
-RecipeBookPlanner/
+MyRecipeBook/
 │
 ├── app/
 │   ├── src/
