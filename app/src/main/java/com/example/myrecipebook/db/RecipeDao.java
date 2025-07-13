@@ -32,4 +32,10 @@ public interface RecipeDao {
 
     @Query("UPDATE recipes SET isFavorite = :isFavorite WHERE id = :recipeId")
     void updateFavoriteStatus(int recipeId, boolean isFavorite);
+
+    @Query("SELECT * FROM recipes WHERE name LIKE '%' || :searchQuery || '%'")
+    List<Recipe> getRecipesBySearch(String searchQuery);
+
+    @Query("SELECT * FROM recipes WHERE category IN (:category) AND name LIKE '%' || :searchQuery || '%'")
+    List<Recipe> getRecipesByCategoryAndSearch(String searchQuery, String category);
 }

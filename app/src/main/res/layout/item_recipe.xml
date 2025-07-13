@@ -26,7 +26,7 @@
                 android:id="@+id/textViewRecipeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Recipe Name"
+                android:text="@string/recipe_name"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
@@ -55,8 +55,8 @@
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_heart_outline"
-            android:contentDescription="Add to favorites"
-            android:tint="@color/heart_color" />
+            android:contentDescription="@string/add_to_favorites"
+            app:tint="@color/heart_color" />
 
     </LinearLayout>
 

@@ -8,7 +8,7 @@ import android.content.Context;
 import com.example.myrecipebook.models.Recipe;
 import com.example.myrecipebook.models.User;
 
-@Database(entities = {Recipe.class, User.class}, version = 3, exportSchema = false)
+@Database(entities = {Recipe.class, User.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract UserDao userDao();
@@ -19,9 +19,12 @@ public abstract class AppDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
+                    //context.deleteDatabase("myrecipebook.db");
+
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "myrecipebook.db")
                             .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigrationOnDowngrade()
                             .build();
                 }
             }

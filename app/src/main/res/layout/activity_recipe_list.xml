@@ -16,6 +16,33 @@
         app:title="My Recipes"
         app:titleTextColor="@android:color/white" />
 
+    <!-- Search Bar and Category Filter -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Search Recipes"
+            android:padding="10dp"
+            android:background="@drawable/search_bar_bg" />
+
+        <!-- Category Filter -->
+        <Spinner
+            android:id="@+id/categoryFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp" />
+
+    </LinearLayout>
+
     <!-- Main Content Area -->
     <FrameLayout
         android:layout_width="match_parent"

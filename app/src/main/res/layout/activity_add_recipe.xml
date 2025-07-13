@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary_color"
-        android:elevation="4dp"
         app:title="Add Recipe"
         app:titleTextColor="@android:color/white"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -21,112 +19,107 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/bottomNavigation"
-        android:fillViewport="true">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:orientation="vertical">
 
             <!-- Recipe Name -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/primary_color"
-                app:hintTextColor="@color/primary_color">
-
+                android:hint="Recipe Name">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextRecipeName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Recipe Name"
-                    android:textSize="16sp" />
-
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Category -->
+            <!-- Categories -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/primary_color"
-                app:hintTextColor="@color/primary_color">
+                android:hint="Categories"
+                android:layout_marginTop="12dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextCategory"
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Category (e.g., Dinner, Dessert)"
-                    android:textSize="16sp" />
-
+                    android:minHeight="48dp"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down"
+                    android:drawableTint="@color/primary_color"
+                    android:padding="12dp"
+                    android:focusable="false"
+                    android:clickable="true" /> />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Upload Image Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonUploadImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Recipe Image"
+                android:layout_marginTop="12dp"
+                android:icon="@drawable/ic_upload"
+                android:iconTint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/primary_color"
+                app:cornerRadius="12dp" />
+
+            <!-- Image Preview -->
+            <ImageView
+                android:id="@+id/imageViewRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="12dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:background="@color/card_background"
+                android:contentDescription="Recipe Image Preview" />
 
             <!-- Ingredients -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/primary_color"
-                app:hintTextColor="@color/primary_color">
-
+                android:hint="Ingredients (one per line)"
+                android:layout_marginTop="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextIngredients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingredients (one per line)"
-                    android:textSize="16sp"
-                    android:minLines="4"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine" />
-
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Instructions -->
+            <!-- Cooking Instructions -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:boxStrokeColor="@color/primary_color"
-                app:hintTextColor="@color/primary_color">
-
+                android:hint="Cooking Instructions"
+                android:layout_marginTop="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextInstructions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Cooking Instructions"
-                    android:textSize="16sp"
-                    android:minLines="6"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine" />
-
+                    android:inputType="textMultiLine"
+                    android:minLines="4" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Save Button -->
+            <!-- Save Recipe Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonSaveRecipe"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:text="Save Recipe"
-                android:textSize="16sp"
-                android:textAllCaps="false"
-                app:cornerRadius="8dp"
-                app:backgroundTint="@color/primary_color"
                 android:textColor="@android:color/white"
+                android:backgroundTint="@color/primary_color"
+                android:layout_marginTop="16dp"
                 app:icon="@drawable/ic_save"
-                app:iconGravity="textStart" />
-
+                app:iconTint="@android:color/white"
+                app:cornerRadius="12dp" />
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation -->
-    <include
-        android:id="@+id/bottomNavigation"
-        layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
 </RelativeLayout>

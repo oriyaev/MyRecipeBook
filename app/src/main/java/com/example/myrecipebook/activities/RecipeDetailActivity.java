@@ -1,23 +1,30 @@
 package com.example.myrecipebook.activities;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.myrecipebook.R;
 import com.example.myrecipebook.db.AppDatabase;
 import com.example.myrecipebook.models.Recipe;
 import com.example.myrecipebook.utils.BottomNavigationHelper;
+import com.google.android.material.button.MaterialButton;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 
     TextView textViewRecipeName, textViewCategory, textViewIngredients, textViewInstructions;
     ImageButton buttonFavorite;
+    MaterialButton buttonDeleteRecipe;
     AppDatabase db;
     Recipe currentRecipe;
 
@@ -26,23 +33,23 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // Initialize views
         textViewRecipeName = findViewById(R.id.textViewRecipeName);
         textViewCategory = findViewById(R.id.textViewCategory);
         textViewIngredients = findViewById(R.id.textViewIngredients);
         textViewInstructions = findViewById(R.id.textViewInstructions);
         buttonFavorite = findViewById(R.id.buttonFavorite);
+        buttonDeleteRecipe = findViewById(R.id.buttonDeleteRecipe);
+
+        buttonDeleteRecipe.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_color));
+        buttonDeleteRecipe.setOnClickListener(v -> deleteRecipe());
 
         db = AppDatabase.getDatabase(this);
-
-        // Setup bottom navigation
         BottomNavigationHelper.setupBottomNavigation(this);
 
         int recipeId = getIntent().getIntExtra("recipeId", -1);
@@ -55,10 +62,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         loadRecipe(recipeId);
 
-        // Handle back button
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // Handle favorite button
         buttonFavorite.setOnClickListener(v -> toggleFavorite());
     }
 
@@ -89,6 +94,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
         textViewInstructions.setText(recipe.instructions);
 
         updateFavoriteButton(recipe.isFavorite);
+
+        if (recipe.imageUri != null && !recipe.imageUri.isEmpty()) {
+            ImageView imageViewRecipe = findViewById(R.id.imageViewRecipe);
+            imageViewRecipe.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(Uri.parse(recipe.imageUri))
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_broken_image)
+                    .into(imageViewRecipe);
+        }
     }
 
     private void updateFavoriteButton(boolean isFavorite) {
@@ -113,6 +128,24 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 String message = currentRecipe.isFavorite ?
                         "Added to favorites" : "Removed from favorites";
                 Toast.makeText(RecipeDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
+    }
+
+    private void deleteRecipe() {
+        if (currentRecipe == null) return;
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                db.recipeDao().deleteRecipe(currentRecipe);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                Toast.makeText(RecipeDetailActivity.this, "Recipe deleted successfully", Toast.LENGTH_SHORT).show();
+                finish(); // חוזר לרשימה
             }
         }.execute();
     }

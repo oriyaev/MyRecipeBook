@@ -12,4 +12,8 @@
     <string name="registration_successful">Registration successful</string>
     <string name="all_fields_required">All fields are required</string>
     <string name="favorite_label">★ Favorite</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="category">Category</string>
+    <string name="add_to_favorites">Add to favorites</string>
+
 </resources>

@@ -43,6 +43,16 @@
             android:name=".activities.RecipeDetailActivity"
             android:exported="true" />
 
+        <!-- Add Recipe Activity -->
+        <activity
+            android:name=".activities.AddRecipeActivity"
+            android:exported="true" />
+
+        <!-- Favorites Activity -->
+        <activity
+            android:name=".activities.FavoritesActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

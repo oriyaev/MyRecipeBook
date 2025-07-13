@@ -15,6 +15,7 @@ public class Recipe {
     public int userId;
     public boolean isFavorite;
     public long createdAt;
+    public String imageUri;
 
     public Recipe() {
         this.createdAt = System.currentTimeMillis();
