@@ -48,7 +48,7 @@ MyRecipeBook/
 
 1. **Clone the Repository**  
    ```bash
-   git clone https://github.com/your-username/RecipeBookPlanner.git
+   git clone https://github.com/your-username/MyRecipeBook.git
    cd RecipeBookPlanner
    ```
 
