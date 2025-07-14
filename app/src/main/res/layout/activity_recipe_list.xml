@@ -16,31 +16,59 @@
         app:title="My Recipes"
         app:titleTextColor="@android:color/white" />
 
-    <!-- Search Bar and Category Filter -->
+    <!-- Filters Section -->
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:padding="16dp">
 
         <!-- Search Bar -->
         <EditText
             android:id="@+id/searchBar"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:hint="Search Recipes"
             android:padding="10dp"
             android:background="@drawable/search_bar_bg" />
 
-        <!-- Category Filter -->
-        <Spinner
-            android:id="@+id/categoryFilter"
-            android:layout_width="wrap_content"
+        <!-- Category Multi-Select -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp" />
+            android:hint="Categories"
+            android:layout_marginTop="12dp">
 
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:padding="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Ingredient Multi-Select -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingredients"
+            android:layout_marginTop="12dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:padding="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Main Content Area -->
@@ -49,7 +77,6 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <!-- Recipe List -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewRecipes"
             android:layout_width="match_parent"
@@ -57,7 +84,6 @@
             android:padding="16dp"
             android:clipToPadding="false" />
 
-        <!-- Empty State -->
         <LinearLayout
             android:id="@+id/emptyStateView"
             android:layout_width="match_parent"
@@ -92,7 +118,6 @@
                 android:textColor="@color/text_secondary"
                 android:textAlignment="center" />
         </LinearLayout>
-
     </FrameLayout>
 
     <!-- Bottom Navigation -->

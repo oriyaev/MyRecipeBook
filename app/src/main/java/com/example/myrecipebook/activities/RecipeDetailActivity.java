@@ -19,6 +19,9 @@ import com.example.myrecipebook.db.AppDatabase;
 import com.example.myrecipebook.models.Recipe;
 import com.example.myrecipebook.utils.BottomNavigationHelper;
 import com.google.android.material.button.MaterialButton;
+import com.example.myrecipebook.models.Ingredient;
+
+import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 
@@ -69,16 +72,23 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private void loadRecipe(int recipeId) {
         new AsyncTask<Void, Void, Recipe>() {
+            List<Ingredient> ingredientList;
+
             @Override
             protected Recipe doInBackground(Void... voids) {
-                return db.recipeDao().getRecipeById(recipeId);
+                Recipe recipe = db.recipeDao().getRecipeById(recipeId);
+                if (recipe != null) {
+                    // טען את המצרכים הנפרדים מה-DB
+                    ingredientList = db.ingredientDao().getIngredientsForRecipe(recipeId);
+                }
+                return recipe;
             }
 
             @Override
             protected void onPostExecute(Recipe recipe) {
                 if (recipe != null) {
                     currentRecipe = recipe;
-                    displayRecipe(recipe);
+                    displayRecipe(recipe, ingredientList);
                 } else {
                     Toast.makeText(RecipeDetailActivity.this, "Recipe not found", Toast.LENGTH_SHORT).show();
                     finish();
@@ -87,12 +97,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }.execute();
     }
 
-    private void displayRecipe(Recipe recipe) {
+    private void displayRecipe(Recipe recipe, List<Ingredient> ingredientList) {
         textViewRecipeName.setText(recipe.name);
         textViewCategory.setText(recipe.category);
-        textViewIngredients.setText(recipe.ingredients);
-        textViewInstructions.setText(recipe.instructions);
 
+        StringBuilder ingredientsText = new StringBuilder();
+        for (Ingredient ingredient : ingredientList) {
+            ingredientsText.append("• ").append(ingredient.name).append("\n");
+        }
+        textViewIngredients.setText(ingredientsText.toString());
+
+        textViewInstructions.setText(recipe.instructions);
         updateFavoriteButton(recipe.isFavorite);
 
         if (recipe.imageUri != null && !recipe.imageUri.isEmpty()) {
@@ -105,6 +120,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     .into(imageViewRecipe);
         }
     }
+
 
     private void updateFavoriteButton(boolean isFavorite) {
         buttonFavorite.setImageResource(isFavorite ?
