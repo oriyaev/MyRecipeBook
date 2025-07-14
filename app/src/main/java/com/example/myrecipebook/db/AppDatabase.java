@@ -7,19 +7,20 @@ import android.content.Context;
 
 import com.example.myrecipebook.models.Recipe;
 import com.example.myrecipebook.models.User;
+import com.example.myrecipebook.models.Ingredient;
 
-@Database(entities = {Recipe.class, User.class}, version = 4, exportSchema = false)
+@Database(entities = {Recipe.class, User.class, Ingredient.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract UserDao userDao();
+    public abstract IngredientDao ingredientDao();
 
     private static volatile AppDatabase INSTANCE;
-
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
-                    //context.deleteDatabase("myrecipebook.db");
+                    //context.getApplicationContext().deleteDatabase("myrecipebook.db");
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "myrecipebook.db")
