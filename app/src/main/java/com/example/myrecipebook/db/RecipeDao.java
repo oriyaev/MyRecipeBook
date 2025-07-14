@@ -40,7 +40,7 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE name LIKE '%' || :searchQuery || '%'")
     List<Recipe> getRecipesBySearch(String searchQuery);
 
-    @Query("SELECT * FROM recipes WHERE category LIKE '%' || :category || '%' AND name LIKE '%' || :searchQuery || '%'")
+    @Query("SELECT * FROM recipes WHERE category IN (:category) AND name LIKE '%' || :searchQuery || '%'")
     List<Recipe> getRecipesByCategoryAndSearch(String searchQuery, String category);
 
     @Query("SELECT * FROM recipes")
