@@ -9,7 +9,7 @@ import com.example.myrecipebook.models.Recipe;
 import com.example.myrecipebook.models.User;
 import com.example.myrecipebook.models.Ingredient;
 
-@Database(entities = {Recipe.class, User.class, Ingredient.class}, version = 5, exportSchema = false)
+@Database(entities = {Recipe.class, User.class, Ingredient.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract UserDao userDao();

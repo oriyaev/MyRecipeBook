@@ -26,4 +26,7 @@ public interface IngredientDao {
     @Query("SELECT DISTINCT name FROM ingredients")
     List<String> getAllIngredientNames();
 
+    @Query("SELECT DISTINCT name FROM ingredients ORDER BY name ASC")
+    List<String> getAllUniqueIngredients();
+
 }

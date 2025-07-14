@@ -72,17 +72,24 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     class RecipeViewHolder extends RecyclerView.ViewHolder {
         TextView recipeName, category;
         ImageButton favoriteButton;
+        TextView textViewCookingTime, textViewDifficulty;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeName = itemView.findViewById(R.id.textViewRecipeName);
             category = itemView.findViewById(R.id.textViewCategory);
             favoriteButton = itemView.findViewById(R.id.buttonFavorite);
+            textViewCookingTime = itemView.findViewById(R.id.textViewCookingTime);
+            textViewDifficulty = itemView.findViewById(R.id.textViewDifficulty);
         }
 
         public void bind(Recipe recipe, int position) {
             recipeName.setText(recipe.name);
             category.setText(recipe.category);
+
+            // Bind cooking time and difficulty
+            textViewCookingTime.setText(recipe.cookingTime != null ? recipe.cookingTime : "N/A");
+            textViewDifficulty.setText(recipe.difficulty != null ? recipe.difficulty : "N/A");
 
             // Update favorite button appearance
             favoriteButton.setImageResource(recipe.isFavorite ?

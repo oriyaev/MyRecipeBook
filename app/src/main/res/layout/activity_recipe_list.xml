@@ -10,11 +10,24 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="84dp"
         android:background="@color/primary_color"
         android:elevation="4dp"
         app:title="My Recipes"
         app:titleTextColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textViewWelcomeMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Let's Start Cooking!"
+        android:textColor="@color/text_primary"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
 
     <!-- Filters Section -->
     <LinearLayout

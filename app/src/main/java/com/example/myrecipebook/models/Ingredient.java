@@ -17,7 +17,8 @@ public class Ingredient {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int recipeId; // קישור ל-Recipe
+    public int recipeId;  // Linking to the Recipe
 
-    public String name; // שם המצרך
+    public String name;   // Ingredient name (e.g., "Milk")
+    public String measure; // Measurement (e.g., "2 cups")
 }

@@ -80,15 +80,44 @@
                 android:background="@color/card_background"
                 android:contentDescription="Recipe Image Preview" />
 
-            <!-- Ingredients (Dynamic with remove button) -->
+            <!-- Cooking Time -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cooking Time (e.g. 30 minutes)"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextCookingTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Difficulty Level -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Difficulty Level"
+                android:layout_marginTop="12dp">
+
+                <Spinner
+                    android:id="@+id/spinnerDifficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:importantForAccessibility="yes"
+                    android:focusable="true"
+                    android:clickable="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Ingredients (dynamic with name + measurement + remove button) -->
             <LinearLayout
                 android:id="@+id/ingredientsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="12dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
+                android:layout_marginTop="12dp" />
 
             <!-- Cooking Instructions -->
             <com.google.android.material.textfield.TextInputLayout

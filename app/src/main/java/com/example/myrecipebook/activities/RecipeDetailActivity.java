@@ -78,7 +78,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             protected Recipe doInBackground(Void... voids) {
                 Recipe recipe = db.recipeDao().getRecipeById(recipeId);
                 if (recipe != null) {
-                    // טען את המצרכים הנפרדים מה-DB
+                    // Load ingredients with their measurements from the database
                     ingredientList = db.ingredientDao().getIngredientsForRecipe(recipeId);
                 }
                 return recipe;
@@ -101,15 +101,21 @@ public class RecipeDetailActivity extends AppCompatActivity {
         textViewRecipeName.setText(recipe.name);
         textViewCategory.setText(recipe.category);
 
+        // Build the ingredients string with name and measurement
         StringBuilder ingredientsText = new StringBuilder();
         for (Ingredient ingredient : ingredientList) {
-            ingredientsText.append("• ").append(ingredient.name).append("\n");
+            ingredientsText.append("• ")
+                    .append(ingredient.name)
+                    .append(" - ")
+                    .append(ingredient.measure) // Add the measurement after the ingredient name
+                    .append("\n");
         }
         textViewIngredients.setText(ingredientsText.toString());
 
         textViewInstructions.setText(recipe.instructions);
         updateFavoriteButton(recipe.isFavorite);
 
+        // Load recipe image using Glide
         if (recipe.imageUri != null && !recipe.imageUri.isEmpty()) {
             ImageView imageViewRecipe = findViewById(R.id.imageViewRecipe);
             imageViewRecipe.setVisibility(View.VISIBLE);
@@ -120,7 +126,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     .into(imageViewRecipe);
         }
     }
-
 
     private void updateFavoriteButton(boolean isFavorite) {
         buttonFavorite.setImageResource(isFavorite ?
@@ -161,7 +166,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 Toast.makeText(RecipeDetailActivity.this, "Recipe deleted successfully", Toast.LENGTH_SHORT).show();
-                finish(); // חוזר לרשימה
+                finish(); // Go back to the recipe list
             }
         }.execute();
     }
